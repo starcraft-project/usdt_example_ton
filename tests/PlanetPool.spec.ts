@@ -153,5 +153,16 @@ describe('PlanetPool', () => {
         const my_deposit = await planetPool.getUserActivation(deployer.address);
         console.log('my_deposit ', my_deposit);
 
+
+        // 6. get receiver amount
+        const receiverJettonWallet = blockchain.openContract(
+            Wallet.createFromConfig(
+                { owner_address: usdtReceiver.address, jetton_master_address: jettonMinter.address },
+                await compile('jetton-wallet')
+            )
+        );
+
+        console.log(await receiverJettonWallet.getJettonData())
+
     });
 });
