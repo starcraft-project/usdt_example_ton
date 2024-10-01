@@ -73,6 +73,8 @@ describe('Sample', () => {
             master_msg: master_msg
         });
 
+        printTransactionFees(deployResult.transactions)
+
         expect(deployResult.transactions).toHaveTransaction({
             from: deployer.address,
             to: minter.address,
@@ -94,6 +96,7 @@ describe('Sample', () => {
         let balanceDeployer = await jettonWallet_deployer.getBalance();
         console.log("Balance: " + balanceDeployer);
     });
+
 
     // it('should increase counter', async () => {
     //     const increaseTimes = 3;
