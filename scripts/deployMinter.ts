@@ -7,13 +7,12 @@ import { buildOnchainMetadata } from "./jetton-helpers";
 
 export async function run(provider: NetworkProvider) {
 
-    let nextAdminAddress = Address.parse("EQD8TJ8xEWB1SpnRE4d89YO3jl0W0EiBnNS4IBaHaUmdfizE");
-    // let toAddress = Address.parse("EQD8TJ8xEWB1SpnRE4d89YO3jl0W0EiBnNS4IBaHaUmdfizE");
+    let nextAdminAddress = Address.parse("0QADyTLHHkylyNZ5D20yOz8-cmJIkR3YutFHU3daMbscwblD");
 
     const jettonParams = {
-        name: "test USDT",
+        name: "USDT",
         description: "This is description for test USDT",
-        symbol: "testUSDT",
+        symbol: "USDT",
         image: "https://i.ibb.co/J3rk47X/USDT-ocean.webp"
     };
 

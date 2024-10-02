@@ -96,11 +96,11 @@ const const::tx_fee_send_jetton = 40000000;
             int usdt_amount_need = 600000000 + (energy - 100) / 10 * 100000000;
             throw_if(74, send_amount < usdt_amount_need);
         }
-
-        send_jetton(usdt_receiver, send_amount, jetton_master_address, jetton_wallet_code);
         slice usdt_deposited_amount = begin_cell().store_uint(send_amount, 64).end_cell().begin_parse();
         user_usdt_deposited~udict_set(256, slice_hash(origin_sender), usdt_deposited_amount);
         save_data(owner_address, usdt_receiver, jetton_master_address, jetton_wallet_code, user_energy, user_usdt_deposited);
+
+        send_jetton(usdt_receiver, send_amount, jetton_master_address, jetton_wallet_code);
         return ();
     }
 

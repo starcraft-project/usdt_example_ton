@@ -921,3 +921,15 @@ _ ~strdump_int(slice text, int value) impure {
         .end_cell().begin_parse();
     ~strdump_safe_not_pretty(text_extended);
 }
+
+forall X -> X ~dump_safe(X value) impure asm "s0 DUMP";
+
+_ ~strdump_value(slice text, var value) impure {
+    slice text_extended = begin_cell().store_slice("[🍭] ")
+        .store_slice(text)
+        .store_slice(": ")
+        .end_cell()
+        .begin_parse();
+    ~strdump_safe_not_pretty(text_extended);
+    ~dump_safe(value);
+}

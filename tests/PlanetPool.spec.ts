@@ -92,7 +92,7 @@ describe('PlanetPool', () => {
             master_msg: master_msg
         });
 
-        // printTransactionFees(mintResult.transactions);
+        printTransactionFees(mintResult.transactions);
 
         // const deployerJettonData = await jettonWallet_deployer.getJettonData();
         // console.log(deployerJettonData[0]);
@@ -136,7 +136,7 @@ describe('PlanetPool', () => {
         // 4. transfer token to pool
         const transferResult = await jettonWallet_deployer.sendTransfer(
             deployer.getSender(), {
-                value: toNano(0.05),
+                value: toNano(1),
                 toAddress: planetPool.address,
                 queryId: 2,
                 fwdAmount: toNano(0.01),
@@ -145,6 +145,7 @@ describe('PlanetPool', () => {
         );
 
         printTransactionFees(transferResult.transactions);
+        prettyLogTransactions(transferResult.transactions);
         let deployerJettonData = await jettonWallet_deployer.getJettonData();
         console.log(deployerJettonData[0]);
 
@@ -155,14 +156,20 @@ describe('PlanetPool', () => {
 
 
         // 6. get receiver amount
-        const receiverJettonWallet = blockchain.openContract(
-            Wallet.createFromConfig(
-                { owner_address: usdtReceiver.address, jetton_master_address: jettonMinter.address },
-                await compile('jetton-wallet')
-            )
-        );
+        // const receiverJettonWallet = blockchain.openContract(
+        //     Wallet.createFromConfig(
+        //         { owner_address: usdtReceiver.address, jetton_master_address: jettonMinter.address },
+        //         await compile('jetton-wallet')
+        //     )
+        // );
+        //
+        // console.log(await receiverJettonWallet.getJettonData())
 
-        console.log(await receiverJettonWallet.getJettonData())
+        // 6. planet pool contract balance
+        const planetPoolContractAddress = await jettonMinter.getWalletAddress(planetPool.address);
+        const planetPoolWallet = blockchain.openContract(Wallet.createFromAddress(planetPoolContractAddress));
+        console.log((await planetPoolWallet.getJettonData())[0])
+
 
     });
 });
