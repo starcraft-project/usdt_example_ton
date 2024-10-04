@@ -189,5 +189,11 @@ describe('PlanetPool', () => {
         planetPoolWallet = blockchain.openContract(Wallet.createFromAddress(planetPoolContractAddress));
         console.log((await planetPoolWallet.getJettonData())[0]);
 
+        // 8. usdt receiver
+        const usdtReceiverAddress = await jettonMinter.getWalletAddress(usdtReceiver.address);
+
+        const usdtReceiverWallet = blockchain.openContract(Wallet.createFromAddress(usdtReceiverAddress));
+        console.log((await usdtReceiverWallet.getJettonData())[0]);
+
     });
 });
