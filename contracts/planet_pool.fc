@@ -29,11 +29,10 @@ const const::tx_fee_send_jetton = 40000000;
         .end_cell());
 }
 
-() send_jetton(slice recepient, int amount, slice JETTON_MASTER_ADDRESS, cell JETTON_BYTE_CODE) impure inline {
+() send_jetton(slice recepient, slice jetton_wallet, int amount, slice JETTON_MASTER_ADDRESS, cell JETTON_BYTE_CODE) impure inline {
     if (amount == 0) {
         return ();
     }
-    slice jetton_wallet = calculate_user_jetton_wallet_address(my_address(), JETTON_MASTER_ADDRESS, JETTON_BYTE_CODE);
 
     var msg = begin_cell()
         .store_uint(0x18, 6) ;; nobounce - int_msg_info$0 ihr_disabled:Bool bounce:Bool bounced:Bool src:MsgAddress -> 011000
@@ -67,19 +66,16 @@ const const::tx_fee_send_jetton = 40000000;
     (slice owner_address, slice usdt_receiver, slice jetton_master_address, cell jetton_wallet_code, cell user_energy, cell user_usdt_deposited) = load_data();
 
 
-
     if (op == op::transfer_notification()) {
         int send_amount = in_msg_body~load_coins();
 
         ;; throw_unless(109, equal_slices(sender_address, calculate_user_jetton_wallet_address(my_address(), jetton_master_address, jetton_wallet_code)));
-        ~strdump_int("send amount ", send_amount);
         slice origin_sender = in_msg_body~load_msg_addr();
         (slice energy_data, int f) = user_energy.udict_get?(256, slice_hash(origin_sender));
         if (f == 0) {
             return ();
         }
         int energy = energy_data~load_uint(32);
-        ~strdump_int(" my energy value ", energy);
         if (energy < 12) {
             throw_if(74, send_amount < 100000000);
         } elseif (energy < 30) {
@@ -100,7 +96,7 @@ const const::tx_fee_send_jetton = 40000000;
         user_usdt_deposited~udict_set(256, slice_hash(origin_sender), usdt_deposited_amount);
         save_data(owner_address, usdt_receiver, jetton_master_address, jetton_wallet_code, user_energy, user_usdt_deposited);
 
-        send_jetton(usdt_receiver, send_amount, jetton_master_address, jetton_wallet_code);
+        ;; send_jetton(usdt_receiver, send_amount, jetton_master_address, jetton_wallet_code);
         return ();
     }
 
@@ -116,8 +112,11 @@ const const::tx_fee_send_jetton = 40000000;
 
     if (op == op::withdraw()) {
         throw_unless(73, equal_slices(sender_address, owner_address));
+        (slice owner_address, slice usdt_receiver, slice jetton_master_address, cell jetton_wallet_code, cell user_energy, cell user_usdt_deposited) = load_data();
+
         int withdraw_amount = in_msg_body~load_uint(64);
-        send_jetton(owner_address, withdraw_amount, jetton_master_address, jetton_wallet_code);
+        slice pool_usdt_address = in_msg_body~load_msg_addr();
+        send_jetton(usdt_receiver, pool_usdt_address, withdraw_amount, jetton_master_address, jetton_wallet_code);
         return ();
     }
 
@@ -142,4 +141,8 @@ const const::tx_fee_send_jetton = 40000000;
     }
     int usdt_deposited = data~load_uint(64);
     return usdt_deposited;
+}
+
+(slice, slice, slice, cell, cell, cell) get_planet_pool_data() method_id {
+    return load_data();
 }

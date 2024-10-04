@@ -82,15 +82,17 @@ export class PlanetPool implements Contract {
 
     async sendWithdraw(provider: ContractProvider, via: Sender, opts: {
         queryId?: number;
+        pool_address: Address;
     }) {
         const messageBody = beginCell()
             .storeUint(0x444, 32)
             .storeUint(opts.queryId || 0, 64)
-            .storeUint(toNano(0.00005), 64)
+            .storeUint(toNano(5), 64)
+            .storeAddress(opts.pool_address)
             .endCell();
 
         await provider.internal(via, {
-            value: toNano('0.1'),
+            value: toNano('1'),
             body: messageBody
         });
     }
@@ -142,6 +144,14 @@ export class PlanetPool implements Contract {
             } as TupleItemSlice
         ]);
         return result.stack.readBigNumber();
+    }
+
+
+    async getPlanetPoolData(provider: ContractProvider) {
+        const result = await provider.get('get_planet_pool_data', []);
+        // console.log(result.stack.readAddress());
+        // console.log(result.stack.readAddress());
+        // console.log(result.stack.readAddress());
     }
 
 

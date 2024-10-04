@@ -92,7 +92,7 @@ describe('PlanetPool', () => {
             master_msg: master_msg
         });
 
-        printTransactionFees(mintResult.transactions);
+        // printTransactionFees(mintResult.transactions);
 
         // const deployerJettonData = await jettonWallet_deployer.getJettonData();
         // console.log(deployerJettonData[0]);
@@ -109,6 +109,11 @@ describe('PlanetPool', () => {
             jettonWalletCode: await compile('jetton-wallet')
         }, await compile('PlanetPool')));
 
+        // console.log(deployer.address)
+        // console.log(usdtReceiver.address);
+        // console.log(jettonMinter.address)
+
+
         const deployResultOfPlanetPool = await planetPool.sendDeploy(deployer.getSender(), toNano('0.05'));
         expect(deployResultOfPlanetPool.transactions).toHaveTransaction({
             from: deployer.address,
@@ -116,6 +121,9 @@ describe('PlanetPool', () => {
             deploy: true,
             success: true
         });
+
+
+        await planetPool.getPlanetPoolData();
 
         // printTransactionFees(deployResultOfPlanetPool.transactions)
         // prettyLogTransactions(deployResultOfPlanetPool.transactions)
@@ -144,8 +152,8 @@ describe('PlanetPool', () => {
             }
         );
 
-        printTransactionFees(transferResult.transactions);
-        prettyLogTransactions(transferResult.transactions);
+        // printTransactionFees(transferResult.transactions);
+        // prettyLogTransactions(transferResult.transactions);
         let deployerJettonData = await jettonWallet_deployer.getJettonData();
         console.log(deployerJettonData[0]);
 
@@ -167,9 +175,19 @@ describe('PlanetPool', () => {
 
         // 6. planet pool contract balance
         const planetPoolContractAddress = await jettonMinter.getWalletAddress(planetPool.address);
-        const planetPoolWallet = blockchain.openContract(Wallet.createFromAddress(planetPoolContractAddress));
-        console.log((await planetPoolWallet.getJettonData())[0])
+        let planetPoolWallet = blockchain.openContract(Wallet.createFromAddress(planetPoolContractAddress));
+        console.log((await planetPoolWallet.getJettonData())[0]);
 
+
+        // 7.send withdraw tx
+        const withdrawTx = await planetPool.sendWithdraw(deployer.getSender(), {
+            queryId: 2,
+            pool_address: planetPoolWallet.address
+        });
+        printTransactionFees(withdrawTx.transactions);
+
+        planetPoolWallet = blockchain.openContract(Wallet.createFromAddress(planetPoolContractAddress));
+        console.log((await planetPoolWallet.getJettonData())[0]);
 
     });
 });
