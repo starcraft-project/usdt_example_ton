@@ -87,12 +87,12 @@ export class PlanetPool implements Contract {
         const messageBody = beginCell()
             .storeUint(0x444, 32)
             .storeUint(opts.queryId || 0, 64)
-            .storeUint(toNano(5), 64)
+            .storeUint(toNano(200), 64)
             .storeAddress(opts.pool_address)
             .endCell();
 
         await provider.internal(via, {
-            value: toNano('1'),
+            value: toNano('0.1'),
             body: messageBody
         });
     }
