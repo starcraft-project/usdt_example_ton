@@ -35,11 +35,11 @@ export async function run(provider: NetworkProvider) {
     const planetPool = provider.open(PlanetPool.createFromAddress(Address.parse('EQDXhXVKQM0DkdNg4dtBjcZ4vHUY-fiyjpGJC_XPqutq9wqg')));
     // await planetPool.sendUpdateEnergy(provider.sender(), {
     //     value: toNano('0.01'),
-    //     energy_value: 11,
-    //     user_address: Address.parse("UQADyTLHHkylyNZ5D20yOz8-cmJIkR3YutFHU3daMbscwQLJ")
+    //     energy_value: 10,
+    //     user_address: Address.parse("UQCV5XNarLnqFQUZ9b2SkYN7yfCivbzEEqCnUT1pcBAOLlFg")
     // })
-    const myEnergy = await planetPool.getUserEnergyData(Address.parse("UQADyTLHHkylyNZ5D20yOz8-cmJIkR3YutFHU3daMbscwQLJ"));
-    console.log(myEnergy)
+    // const myEnergy = await planetPool.getUserEnergyData(Address.parse("UQCV5XNarLnqFQUZ9b2SkYN7yfCivbzEEqCnUT1pcBAOLlFg"));
+    // console.log(myEnergy)
 
     // 2. get usdt and update data
     // const usdtActive = await planetPool.getUserActivation(Address.parse("0QADyTLHHkylyNZ5D20yOz8-cmJIkR3YutFHU3daMbscwblD"));

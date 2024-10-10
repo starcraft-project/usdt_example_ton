@@ -87,7 +87,7 @@ export class PlanetPool implements Contract {
         const messageBody = beginCell()
             .storeUint(0x444, 32)
             .storeUint(opts.queryId || 0, 64)
-            .storeUint(toNano(0.1), 64)
+            .storeUint(toNano(2), 64)
             .storeAddress(opts.pool_address)
             .endCell();
 
