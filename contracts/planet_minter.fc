@@ -1,0 +1,10 @@
+#include "imports/stdlib.fc";
+
+
+;; 1. user use fuel and adfuel inton planet to mint sctg token
+;; 2. claim by daily sctg token relaase
+
+
+() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+
+}
