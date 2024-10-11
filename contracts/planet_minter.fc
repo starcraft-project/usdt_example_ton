@@ -7,6 +7,8 @@
 
 const const::tx_fee_send_jetton = 40000000;
 
+const op::claim_sctg = "op::claim_sctg"c;
+
 
 
 () recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
@@ -24,13 +26,27 @@ const const::tx_fee_send_jetton = 40000000;
     int query_id = in_msg_body~load_uint(64);
 
 
+    ;; 1 . deposit fuel or ad fuel
     if (op == op::transfer_notification()) {
 
     }
+
+    ;; 2. claim sctg
+    if (op == op::claim_sctg) {
+
+    }
+
     throw(0xffff);
 }
 
 
 (int) get_user_claim_value(slice sender_address) method_id {
-return 155;
+    return 155;
 }
+
+
+(int) get_current_time() method_id {
+    return now();
+}
+
+

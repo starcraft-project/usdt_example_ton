@@ -34,5 +34,9 @@ describe('PlanetMinter', () => {
         console.log('hello, world ');
         const claimValueResult = await planetMinter.sendGetClaimValue(deployer.address);
         console.log(claimValueResult);
+
+        const currentTime = await planetMinter.sendGetCurrentTime();
+        console.log(currentTime);
+
     });
 });

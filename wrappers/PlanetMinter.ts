@@ -45,7 +45,13 @@ export class PlanetMinter implements Contract {
                 cell: beginCell().storeAddress(address).endCell()
             } as TupleItemSlice
         ]);
-        return result.stack.readBigNumber()
+        return result.stack.readBigNumber();
+    }
+
+
+    async sendGetCurrentTime(provider: ContractProvider): Promise<bigint> {
+        const result = await provider.get('get_current_time', []);
+        return result.stack.readBigNumber();
     }
 
 }
