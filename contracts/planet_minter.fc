@@ -1,10 +1,36 @@
 #include "imports/stdlib.fc";
-
+#include "imports/op-codes-planet-minter.fc";
 
 ;; 1. user use fuel and adfuel inton planet to mint sctg token
 ;; 2. claim by daily sctg token relaase
 
 
-() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+const const::tx_fee_send_jetton = 40000000;
 
+
+
+() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+    if (in_msg_body.slice_empty?()) {
+        return ();
+    }
+
+    slice cs = in_msg_full.begin_parse();
+    int flags = cs~load_uint(4);
+    if (flags & 1) {
+        return ();
+    }
+    slice sender_address = cs~load_msg_addr();
+    int op = in_msg_body~load_uint(32);
+    int query_id = in_msg_body~load_uint(64);
+
+
+    if (op == op::transfer_notification()) {
+
+    }
+    throw(0xffff);
+}
+
+
+(int) get_user_claim_value(slice sender_address) method_id {
+return 155;
 }

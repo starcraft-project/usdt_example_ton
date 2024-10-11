@@ -1,4 +1,14 @@
-import { Address, beginCell, Cell, Contract, contractAddress, ContractProvider, Sender, SendMode } from '@ton/core';
+import {
+    Address,
+    beginCell,
+    Cell,
+    Contract,
+    contractAddress,
+    ContractProvider,
+    Sender,
+    SendMode,
+    TupleItemSlice
+} from '@ton/core';
 
 export type PlanetMinterConfig = {};
 
@@ -7,7 +17,8 @@ export function planetMinterConfigToCell(config: PlanetMinterConfig): Cell {
 }
 
 export class PlanetMinter implements Contract {
-    constructor(readonly address: Address, readonly init?: { code: Cell; data: Cell }) {}
+    constructor(readonly address: Address, readonly init?: { code: Cell; data: Cell }) {
+    }
 
     static createFromAddress(address: Address) {
         return new PlanetMinter(address);
@@ -23,7 +34,18 @@ export class PlanetMinter implements Contract {
         await provider.internal(via, {
             value,
             sendMode: SendMode.PAY_GAS_SEPARATELY,
-            body: beginCell().endCell(),
+            body: beginCell().endCell()
         });
     }
+
+    async sendGetClaimValue(provider: ContractProvider, address: Address): Promise<bigint> {
+        const result = await provider.get('get_user_claim_value', [
+            {
+                type: 'slice',
+                cell: beginCell().storeAddress(address).endCell()
+            } as TupleItemSlice
+        ]);
+        return result.stack.readBigNumber()
+    }
+
 }

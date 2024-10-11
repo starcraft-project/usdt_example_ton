@@ -17,10 +17,8 @@ describe('PlanetMinter', () => {
 
     beforeEach(async () => {
         blockchain = await Blockchain.create();
-
-        planetMinter = blockchain.openContract(PlanetMinter.createFromConfig({}, code));
-
         deployer = await blockchain.treasury('deployer');
+        planetMinter = blockchain.openContract(PlanetMinter.createFromConfig({}, code));
 
         const deployResult = await planetMinter.sendDeploy(deployer.getSender(), toNano('0.05'));
 
@@ -28,12 +26,13 @@ describe('PlanetMinter', () => {
             from: deployer.address,
             to: planetMinter.address,
             deploy: true,
-            success: true,
+            success: true
         });
     });
 
     it('should deploy', async () => {
-        // the check is done inside beforeEach
-        // blockchain and planetMinter are ready to use
+        console.log('hello, world ');
+        const claimValueResult = await planetMinter.sendGetClaimValue(deployer.address);
+        console.log(claimValueResult);
     });
 });

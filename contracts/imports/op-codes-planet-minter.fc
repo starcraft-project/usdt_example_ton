@@ -1,0 +1,1 @@
+int op::transfer_notification() asm "0x7362d09c PUSHINT";
